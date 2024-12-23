@@ -22,8 +22,7 @@ public class Main {
 }
 
 class CounterThread extends Thread {
-    private Counter counter;
-
+    private final Counter counter;
     CounterThread(Counter counter) {
         this.counter = counter;
     }
@@ -31,12 +30,8 @@ class CounterThread extends Thread {
     @Override
     public void run() {
         for (int i = 0; i < 1000; i++) {
-            increment();
+            counter.increment();
         }
-    }
-
-    private void increment() {
-        counter.setCounter(counter.getCounter() + 1);
     }
 }
 
@@ -44,14 +39,10 @@ class Counter {
     int counter = 0;
 
     public int getCounter() {
-        synchronized (this) {
-            return counter;
-        }
+        return counter;
     }
 
-    public void setCounter(int counter) {
-        synchronized (this) {
-            this.counter = counter;
-        }
+    public synchronized void increment() {
+        counter++;
     }
 }
