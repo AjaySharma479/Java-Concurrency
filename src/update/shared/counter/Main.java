@@ -1,4 +1,4 @@
-package UpdateSharedCounter;
+package update.shared.counter;
 
 public class Main {
     public static void main(String[] args) {
@@ -13,36 +13,10 @@ public class Main {
             try {
                 threads[i].join();
             } catch (InterruptedException e) {
-                threads[i].interrupt();
                 e.printStackTrace();
+                Thread.currentThread().interrupt();
             }
         }
         System.out.println("UpdateSharedCounter.Counter: " + counter.getCounter());
-    }
-}
-
-class CounterThread extends Thread {
-    private final Counter counter;
-    CounterThread(Counter counter) {
-        this.counter = counter;
-    }
-
-    @Override
-    public void run() {
-        for (int i = 0; i < 1000; i++) {
-            counter.increment();
-        }
-    }
-}
-
-class Counter {
-    int counter = 0;
-
-    public int getCounter() {
-        return counter;
-    }
-
-    public synchronized void increment() {
-        counter++;
     }
 }
