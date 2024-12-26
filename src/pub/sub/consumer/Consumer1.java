@@ -11,7 +11,7 @@ public class Consumer1 implements IConsumer {
     }
     @Override
     public void consume(String message) {
-        System.out.println(CONSUMER_NAME + " received message: " + message);
+        System.out.println("consumer consumed: " + message);
     }
 
     public void subscribe(String topic) {

@@ -11,7 +11,7 @@ public class BrokerThread extends Thread {
         while (true) {
             try {
                 broker.publishFromQueue();
-                Thread.sleep(1000);
+                Thread.sleep(2000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
                 Thread.currentThread().interrupt();

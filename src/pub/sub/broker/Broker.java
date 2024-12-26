@@ -14,8 +14,10 @@ public class Broker {
     private final Queue<QueueMessage> messageQueue = new LinkedList<>();
     private final int QUEUE_MAXIMUM_SIZE = 10;
 
-    public void publish(String message, String topic) {
+    public synchronized void publish(String message, String topic) throws InterruptedException {
+        while(messageQueue.size() == QUEUE_MAXIMUM_SIZE) this.wait();
         messageQueue.add(new QueueMessage(topic, message));
+        this.notifyAll();
     }
 
     public void subscribe(String topic, IConsumer consumer) {
@@ -29,8 +31,8 @@ public class Broker {
         this.topicToConsumersMap.get(topic).remove(consumer);
     }
 
-    public void publishFromQueue() {
-        if(messageQueue.isEmpty()) return;
+    public synchronized void publishFromQueue() throws InterruptedException {
+        while(messageQueue.isEmpty()) this.wait();
         QueueMessage queueMessage = messageQueue.poll();
         List<IConsumer> topicConsumers = topicToConsumersMap.get(queueMessage.getTopic());
         if (topicConsumers != null) {
@@ -38,6 +40,7 @@ public class Broker {
                 consumer.consume(queueMessage.getMessage());
             }
         }
+        this.notifyAll();
     }
 
     private static class QueueMessage {

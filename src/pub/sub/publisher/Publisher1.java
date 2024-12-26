@@ -13,6 +13,10 @@ public class Publisher1 implements IPublisher {
 
     @Override
     public void publish(String message) {
-        this.broker.publish(message, TOPIC_NAME);
+        try {
+            this.broker.publish(message, TOPIC_NAME);
+        } catch (InterruptedException ignored) {
+
+        }
     }
 }

@@ -10,9 +10,11 @@ public class PublisherThread extends Thread {
     @Override
     public void run() {
         while(true) {
-            publisher.publish("Hi there! " + (int)(Math.random()*10));
+            int message = (int)(Math.random()*10);
+            publisher.publish(String.valueOf(message));
+            System.out.println("producer produced: " + message);
             try {
-                Thread.sleep(2000);
+                Thread.sleep(1000);
             } catch(InterruptedException ignored) {
 
             }
